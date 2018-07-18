@@ -1,90 +1,29 @@
 ![figure](https://github.com/wangying8052/test/blob/master/11.png)
 
-# Released raw data
-We release the following datasets and tool under the MIT License:
+# Project description
 
-* Decca, our dependency issue assessment tool, which is implemented as a Maven plugin to warn developers whether the issues are benign or harmful. You can find it in package **plugin-decca.zip**, which contains the following files and directories:
+Decca is Maven plugin which detects dependency conflict issues between Java projects and third party libraries and assesses the issues’ severity levels to warn developers whether the issues are benign or harmful (e.g., causing runtime exceptions).
 
-> (1) File **decca-1.0.jar** is a copy of Decca‘s implementation for running analysis tasks.
+# Background
 
-> (2)	File **decca-1.0.pom** is the pom file (project object model) of Decca project.
+Software projects depend on an increasing number of third party libraries. Since a depended library might depend on other libraries, a host project would transitively depend on more libraries. Such intensive dependencies on third-party libraries can easily lead to dependency conflicts in practice. That is, multiple versions of the same library or class are presented on the classpath. When multiple classes with the same fully-qualified name exist in a Java project, the JVM will load one of them and shadow the others. If these classes are not compatible, the project can exhibit unexpected behaviors when it has components relying on the shadowed ones.
 
-> (3)	File **soot-1.0.jar** is a program static analysis tool referenced by Decca.
+Maven does a good job in dependency conflict resolution, it usually applied the “nearest wins strategy” to choose the version that is nearer to the root (host project) of the dependency tree, or “first declaration wins strategy” to choose the first declared classes or libraries and "shadow" the ones with the same fully-qualified names or project coordinates. Consequently, it does not guarantee loading the most appropriate class. The dependency conflict issue arises when the loaded classes are not the expected ones of the project (i.e., the referenced feature set of the project is not fully covered by the loaded classes).
 
-> (4)	The directory **apache-maven-3.2.5** is the Maven project. As Decca is a Maven plugin, its implementation depends on Maven project.
+Maven can warn developers of duplicate JARs and classes, but they cannot identify whether the duplications are benign or harmful, which leads to developers may overlook the harmful ones and take no resolution actions.
 
-> (5)	File **script.jar** is the script for evaluating the experimental results shown in Section 5.1. With the help of this script, analyzing the ground truth dataset can be run in batch mode.
+#Our goal
 
-*	Raw data we used in our experiments(Section 5). You can find raw datasets in package **RawData.zip** which is available at:
-https://we.tl/PiShDzvpaF 
+Decca aims to detect dependency conflict issues and assess their severity levels according to their impacts on the system and maintenance costs. The severity levels are defined as follows:
 
-The package **RawData.zip** contains the following two parts of data:
+**Level 1:** the feature set referenced by host project is a subset of the actual loaded feature set. Besides, the shadowed version completely cover the feature set used by the host project. This indicates that any orders of the specification of these duplicate classes on the classpath will not induce serious runtime errors. Therefore, this is a benign conflict and will not affect the system reliability at runtime.
 
-> (a)	The ground truth dataset used to verify the effectiveness of Decca (Section 5.1). You can find it in package **RawData\Ground truth dataset.zip**, which contains the following files and directories:
+**Level 2:** the feature set referenced by host project is a subset of the actual loaded feature set. However, the shadowed feature set doesn’t cover the referenced feature set. It is considered as a potential risk for system reliability since different orders of the specifications of these duplicate classes on the classpath (e.g., in different running environment or building platform) might induce runtime errors. Compared with warnings at Level 1, warnings at Level 2 needs more costs to maintain.
 
->>(1)	File **Ground truth dataset.xlsx** provides the explanation for the dataset.
+**Level 3:** It is a harmful conflict, as the actual loaded feature set does not consume the feature set referenced by host project. The runtime errors will occur when the expected feature cannot be accessed. However, in this case, the shadowed feature set completely cover the feature set referenced by host project. Therefore, it can be solved by adjusting the dependency order on the classpath, without changing any source code.
 
->>(2)	The directory **RawData\Release_conflict** contains the collected host projects with 43 high-severity and 176 low-severity dependency issues.
+**Level 4:** It is a harmful conflict, as the actual loaded feature set does not cover the referenced feature set. Besides, the shadowed feature set does not consume the referenced
+feature set neither. Therefore, this type of conflicts can not be easily resolved by adjusting the dependency orders on the classpath. In this case, to solve these issues, it requires more efforts to ensure the multiple versions of classes could be referenced by host project.
 
->>(3)	The directory **RawData\Release_fixed** contains the above host projects whose high- severity dependency issues have been fixed.
-Running Decca on **RawData\Release_conflict** and **RawData\Release_fixed** can reproduce our experimental results described in Section 5.1.
-
-> (b)	24 Java projects we analyzed to verify the usefulness of Decca (Section 5.2). In package **RawData\Issue report dataset.zip**, you can find the following files and directories:
-
->>(1)	File Issue report **dataset\Reports.docx** lists the links of dependency conflict issue reports we submitted to their corresponding bug tracking systems(in Section 5.2).
-
->>(2)	The directory **Issue report dataset\Projects** contains the 24 subjects with dependency conflict issues.
-
->>(3)	The directory **Issue report dataset\Generated issue reports** contains the issue reports generated by Decca.
-
-Running Decca on them can reproduce our experimental results described in Table 3 of Section 5.2.
-***
-# How to use Decca
-Decca can take a Maven based project (it should contain the complete Maven built project directory and file pom.xml) as input for analysis. The expected running environment is 64-bit Window operating system with JDK 1.7 or 1.8. **As Maven built projects need to download dependencies from Maven Central Repository, Decca cannot work offline.**
-
-You can run Decca on our experimental subjects based on the following steps:
-
-**Step 1**: Unzip the plugin-decca.zip to local directory. Recommended directory structure is:
-
->> D:\plugin-decca
-     
->>     ├─decca-1.0.jar : 
-     
->>     ├─decca-1.0.pom
-   
->>     ├─soot-1.0.jar
-    
->>     ├─apache-maven-3.2.5
-   
->>     ├─script.jar
-
-*Note: To facilitate testing, please keep the unzip directory to be consistent with the above example. It should be noted that the location of data (e.g, D:\plugin-decca) is not hardcoded, it can be replaced with user's actual unzip directory in the install commands.*
-
-**Step 2**: Install Decca
-
-(a) Execute the following Windows CMD command to install soot:
-
->> D:\plugin-decca\apache-maven-3.2.5\bin\mvn.bat install:install-file  -Dfile=D:\plugin-decca\soot-1.0.jar  -DgroupId=neu.lab  -DartifactId=soot -Dversion=1.0 -Dpackaging=jar
-
-(b) Execute the following Windows CMD command to install Decca:
-
->> D:\plugin-decca\apache-maven-3.2.5\bin\mvn.bat install:install-file  -Dfile=D:\plugin-decca\decca-1.0.jar  -DgroupId=neu.lab  -DartifactId=decca -Dversion=1.0 -Dpackaging=maven-plugin -DpomFile=D:\plugin-decca\decca-1.0.pom
-
-**Step 3**: Detect and assess the dependency conflict issues.
-
-Execute the following Windows CMD command to analyze the project:
-
->>D:\plugin-decca\apache-maven-3.2.5\bin\mvn.bat -f=D:\RawData\Issue report dataset\Projects\hadoop-rel-release-3.0.0\hadoop-common-project\hadoop-minikdc\pom.xml -Dmaven.test.skip=true neu.lab:decca:1.0:detect -DresultFilePath=D:\Report\resultFile.xml -DdetectClass=true -e –Dappend=false –e
-
-Then you can get the dependency issue report in your specified directory (e.g., **D:\Report\resultFile.xml**).
-
->>> Command explanation:
->>>>(1) -f=pom file : Specify the project under analysis;
-
->>>>(2) -DresultFilePath=output issue report directory : Output the issue report to the specified file;
-
->>>>(3) -DdetectClass=Boolean : Specify the tool whether reports the class level conflicts or not;
-
->>>>(4) -Dappend=Boolean : Specify the result output mode (whether in append mode or not). 
 
 
