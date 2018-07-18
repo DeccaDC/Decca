@@ -3,7 +3,7 @@
 # Released raw data
 We release the following datasets and tool under the MIT License:
 
-* Decca, our dependency issue assessment tool, which is implemented as a Maven plugin to warn developers whether the issues are benign or harmful. You can find it in package **plugin-decca.zip**, which contains the following files and directories:
+* Decca, our dependency issue assessment tool, which is implemented as a Maven plugin to warn developers whether the issues are benign or harmful. You can download it via https://github.com/DeccaDC/RawData, which contains the following files and directories:
 
 > (1) File **decca-1.0.jar** is a copy of Decca‘s implementation for running analysis tasks.
 
