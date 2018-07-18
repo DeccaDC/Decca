@@ -12,7 +12,7 @@ Maven does a good job in dependency conflict resolution, it usually applied the 
 
 Maven can warn developers of duplicate JARs and classes, but they cannot identify whether the duplications are benign or harmful, which leads to developers may overlook the harmful ones and take no resolution actions.
 
-#Our goal
+# Our goal
 
 Decca aims to detect dependency conflict issues and assess their severity levels according to their impacts on the system and maintenance costs. The severity levels are defined as follows:
 
