@@ -5,6 +5,8 @@
 
 Decca is Maven plugin which detects dependency conflict issues between Java projects and third party libraries and assesses the issues’ severity levels to warn developers whether the issues are benign or harmful (e.g., causing runtime exceptions).
 
+HomePage: https://deccadc.github.io/fse18/
+
 # Background
 
 Software projects depend on an increasing number of third party libraries. Since a depended library might depend on other libraries, a host project would transitively depend on more libraries. Such intensive dependencies on third-party libraries can easily lead to dependency conflicts in practice. That is, multiple versions of the same library or class are presented on the classpath. When multiple classes with the same fully-qualified name exist in a Java project, the JVM will load one of them and shadow the others. If these classes are not compatible, the project can exhibit unexpected behaviors when it has components relying on the shadowed ones.
