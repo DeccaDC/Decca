@@ -3,7 +3,7 @@
 # Released raw data
 We release the following datasets and tool under the MIT License:
 
-* Decca, our dependency issue assessment tool, which is implemented as a Maven plugin to warn developers whether the issues are benign or harmful. You can download it's runnable bytecode, script and raw data via https://github.com/DeccaDC/RawData (![figure](https://zenodo.org/badge/DOI/10.5281/zenodo.1315177.svg)), which contains the following files and directories:
+* Decca, our dependency issue assessment tool, which is implemented as a Maven plugin to warn developers whether the issues are benign or harmful. You can download it's runnable bytecode, script and raw data via https://github.com/DeccaDC/RawData  (DOI:10.5281/zenodo.1315177), which contains the following files and directories:
 
 > (1) File **decca-1.0.jar** is a copy of Decca‘s implementation for running analysis tasks.
 
