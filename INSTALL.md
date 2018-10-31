@@ -62,19 +62,25 @@ You can run Decca on our experimental subjects based on the following steps:
 
 **Step 2**: Install Decca
 
-(a) Execute the following Windows CMD command to install soot:
+(a) Execute the following Windows CMD command and Ubuntu Terminator to install soot:
 
 >> D:\plugin-decca\apache-maven-3.2.5\bin\mvn.bat install:install-file  -Dfile=D:\plugin-decca\soot-1.0.jar  -DgroupId=neu.lab  -DartifactId=soot -Dversion=1.0 -Dpackaging=jar
 
-(b) Execute the following Windows CMD command to install Decca:
+>> sudo mvn install:install-file -Dfile=/plugin-decca/soot-1.0.jar -DgroupId=neu.lab -DartifactId=soot -Dversion=1.0 -Dpackaging=jar
+
+(b) Execute the following Windows CMD command and Ubuntu Terminator to install Decca:
 
 >> D:\plugin-decca\apache-maven-3.2.5\bin\mvn.bat install:install-file  -Dfile=D:\plugin-decca\decca-1.0.jar  -DgroupId=neu.lab  -DartifactId=decca -Dversion=1.0 -Dpackaging=maven-plugin -DpomFile=D:\plugin-decca\decca-1.0.pom
 
+>> sudo mvn install:install-file -Dfile=/plugin-decca/decca-1.0.jar -DgroupId=neu.lab -DartifactId=decca -Dversion=1.0 -Dpackaging=maven-plugin -DpomFile=/plugin-decca/decca-1.0.pom
+
 **Step 3**: Detect and assess the dependency conflict issues.
 
-Execute the following Windows CMD command to analyze the project:
+Execute the following Windows CMD command and Ubuntu Terminator to analyze the project:
 
->>D:\plugin-decca\apache-maven-3.2.5\bin\mvn.bat -f=D:\RawData\Issue report dataset\Projects\hadoop-rel-release-3.0.0\hadoop-common-project\hadoop-minikdc\pom.xml -Dmaven.test.skip=true neu.lab:decca:1.0:detect -DresultFilePath=D:\Report\resultFile.xml -DdetectClass=true -e –Dappend=false –e
+>> D:\plugin-decca\apache-maven-3.2.5\bin\mvn.bat -f=D:\RawData\Issue report dataset\Projects\hadoop-rel-release-3.0.0\hadoop-common-project\hadoop-minikdc\pom.xml -Dmaven.test.skip=true neu.lab:decca:1.0:detect -DresultPath=D:\Report\ -DdetectClass=true -e –Dappend=false –e
+
+>> sudo mvn -f=(example-path)/example-project/pom.xml -DresultPath=/resultPath/ -DsubdivisionLevel=false -Dmaven.test.skip=true neu.lab:decca:1.0:printRiskLevel –e
 
 Then you can get the dependency issue report in your specified directory (e.g., **D:\Report\resultFile.xml**).
 
