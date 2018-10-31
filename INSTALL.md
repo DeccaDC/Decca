@@ -28,7 +28,7 @@ You can run Decca on our experimental subjects based on the following steps:
 
 >> D:\plugin-decca\apache-maven-3.2.5\bin\mvn.bat install:install-file  -Dfile=D:\plugin-decca\soot-1.0.jar  -DgroupId=neu.lab  -DartifactId=soot -Dversion=1.0 -Dpackaging=jar
 
->> Ubuntu Terminator command
+>> Ubuntu Terminator command：
 
 >> sudo mvn install:install-file -Dfile=/plugin-decca/soot-1.0.jar -DgroupId=neu.lab -DartifactId=soot -Dversion=1.0 -Dpackaging=jar
 
@@ -37,7 +37,7 @@ You can run Decca on our experimental subjects based on the following steps:
 
 >> D:\plugin-decca\apache-maven-3.2.5\bin\mvn.bat install:install-file  -Dfile=D:\plugin-decca\decca-1.0.jar  -DgroupId=neu.lab  -DartifactId=decca -Dversion=1.0 -Dpackaging=maven-plugin -DpomFile=D:\plugin-decca\decca-1.0.pom
 
->> Ubuntu Terminator command
+>> Ubuntu Terminator command：
 
 >> sudo mvn install:install-file -Dfile=/plugin-decca/decca-1.0.jar -DgroupId=neu.lab -DartifactId=decca -Dversion=1.0 -Dpackaging=maven-plugin -DpomFile=/plugin-decca/decca-1.0.pom
 
@@ -48,7 +48,7 @@ Execute the following Windows CMD and Ubuntu Terminator command to analyze the p
 
 >> D:\plugin-decca\apache-maven-3.2.5\bin\mvn.bat -f=D:\RawData\Issue report dataset\Projects\hadoop-rel-release-3.0.0\hadoop-common-project\hadoop-minikdc\pom.xml -Dmaven.test.skip=true neu.lab:decca:1.0:detect -DresultPath=D:\Report\ -DdetectClass=true -e –Dappend=false –e
 
->> Ubuntu Terminator command
+>> Ubuntu Terminator command：
 
 >> sudo mvn -f=(example-path)/example-project/pom.xml -DresultPath=/resultPath/ -DsubdivisionLevel=false -Dmaven.test.skip=true neu.lab:decca:1.0:printRiskLevel –e
 
